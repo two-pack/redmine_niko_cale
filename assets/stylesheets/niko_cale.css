@@ -1,3 +1,7 @@
+#niko_niko_calendar {
+	min-height: 600px;
+}
+	
 #bubble_tooltip{
 	width:147px;
 	position:absolute;
@@ -124,7 +128,7 @@ a.niko-cale > span.tooltip > span.text::after {
 
 }
 
-a.niko-cale:hover > .tooltip {
+a.niko-cale > img:hover + .tooltip {
 	visibility: visible;
 	opacity: 1;
 }
