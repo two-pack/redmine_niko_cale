@@ -82,7 +82,6 @@ a.niko-cale > span.tooltip > span.text {
   color: #3c1a1f;
   text-align: center;
   padding: 5px 0;
-  border-radius: 6px;
   position: absolute;
   font-size: 12px;
   display: inline-block;
@@ -124,14 +123,11 @@ a.niko-cale > img:hover + .tooltip {
 }
 
 div.wiki.niko-cale-comment  {
-    position: relative;
-    padding: 10px;
-    border: .1px;
-    border-color: silver;
-    border-style: solid;
-    border-radius: 10px;
-    border: 2px solid #eeeeee;
-    margin: 10px;
+  position: relative;
+  padding: 10px;
+  border-radius: 10px;
+  border: 2px solid #eeeeee;
+  margin: 10px;
 }
 
 div.wiki.niko-cale-comment:before {
