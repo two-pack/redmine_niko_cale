@@ -132,3 +132,29 @@ a.niko-cale > img:hover + .tooltip {
 	visibility: visible;
 	opacity: 1;
 }
+}
+
+div.wiki.niko-cale-comment:before {
+  border:10px solid transparent;
+  border-bottom-color:#fff;
+  border-top-width:0;
+  top:-9px;
+  content:"";
+  display:block;
+  left:12px;
+  position:absolute;
+  width:0;
+  z-index:1;
+}
+
+div.wiki.niko-cale-comment:after {
+  border:10px solid transparent;
+  border-bottom-color:silver;
+  border-top-width:0;
+  top:-10px;
+  content:"";
+  display:block;
+  left:12px;
+  position:absolute;
+  width:0;
+}
