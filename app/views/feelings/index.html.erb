@@ -15,12 +15,12 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 %>
-
 <%= render :partial=>'header' %>
+
 <% content_for :header_tags do %>
   <%= auto_discovery_link_tag(:atom, params.merge({:format => 'atom', :page => nil, :key => User.current.rss_key})) %>
 <% end %>
-
+<div>
 <div class="contextual"><%= link_to_feeling_list() %></div>
 <h2><%= @option[:user] ? avatar(@option[:user]) : '' %><%= h(feeling_list(@option)) %> </h2>
 
@@ -34,3 +34,4 @@
 <% other_formats_links do |f| %>
 	<%= f.link_to 'Atom', :url => atom_conditions(@option) %>
 <% end %>
+</div>
