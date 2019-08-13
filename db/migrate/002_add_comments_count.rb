@@ -13,7 +13,7 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
-class AddCommentsCount < ActiveRecord::Migration
+class AddCommentsCount < ActiveRecord::CompatibleLegacyMigration.migration_class
   def self.up
     rename_column(:feelings, :comment, :description)
     add_column(:feelings, "comments_count", :integer, :default => 0,  :null => false)

@@ -13,7 +13,7 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
-class CreateFeelings < ActiveRecord::Migration
+class CreateFeelings < ActiveRecord::CompatibleLegacyMigration.migration_class
   def self.up
     create_table :feelings do |t|
       t.column :user_id, :integer, :null=>false
