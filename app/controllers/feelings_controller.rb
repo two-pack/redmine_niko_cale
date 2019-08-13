@@ -86,7 +86,7 @@ class FeelingsController < ApplicationController
     else
       comment = @feeling.add_comment(User.current, comments)
       if comment
-        FeelingsMailer.feeling_commented(comment).deliver
+        FeelingsMailer.feeling_commented(User.current, comment).deliver
         flash[:notice] = l(:label_comment_added)
       end
       redirect_to action: 'show', id: @feeling.id, project_id: @project

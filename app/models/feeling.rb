@@ -62,7 +62,7 @@ class Feeling < ActiveRecord::Base
   end
 
   def self.exclude_before! date
-    Feeling.destroy_all(["at <= ?", date])
+    Feeling.where(["at <= ?", date]).destroy_all
   end
 
   def self.find_by_user_and_date_range user, date_range

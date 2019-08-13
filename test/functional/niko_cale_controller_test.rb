@@ -27,8 +27,8 @@ class NikoCaleControllerTest < ActionController::TestCase
   # Replace this with your real tests.
   def setup
     @controller = NikoCaleController.new
-    @request    = ActionController::TestRequest.new
-    @response   = ActionController::TestResponse.new
+    @request = ActionController::TestRequest.create(self.class.controller_class)
+    @response = ActionDispatch::TestResponse.new
     User.current = User.find(1)
     def @controller.authorize_global
     end
@@ -46,13 +46,13 @@ class NikoCaleControllerTest < ActionController::TestCase
   end
 
   def test_index
-    get :index, project_id: 0
+    get :index, params: {project_id: 0}
     assert_response 404
-    get :index, project_id: 1
+    get :index, params: {project_id: 1}
     assert_response :success
 
     assert_template 'index'
-    xhr :get, :index, project_id: 1
+    get :index, xhr: true, params: {project_id: 1}
     assert_response :success
   end
 end

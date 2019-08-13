@@ -26,8 +26,8 @@ class FeelingsControllerTest < ActionController::TestCase
 
   def setup
     @controller = FeelingsController.new
-    @request    = ActionController::TestRequest.new
-    @response   = ActionController::TestResponse.new
+    @request = ActionController::TestRequest.create(self.class.controller_class)
+    @response = ActionDispatch::TestResponse.new
     User.current = User.find(1)
     def @controller.authorize_global
     end
@@ -41,42 +41,42 @@ class FeelingsControllerTest < ActionController::TestCase
   end
 
   def test_show
-    get :show, id: 1, project_id: 1
+    get :show, params: {id: 1, project_id: 1}
     assert_response :success
     assert_template 'show'
 
-    get :show, id: 1
+    get :show, params: {id: 1}
     assert_response :success
     assert_template 'show'
 
-    get :show, id: 1, project_id: 0
+    get :show, params: {id: 1, project_id: 0}
     assert_response 404
 
-    get :show, id: 0, project_id: 1
+    get :show, params: {id: 0, project_id: 1}
     assert_response 404
   end
 
   def test_new
-    get :new, 'feeling': { 'at': Date.today }
+    get :new, params: {'feeling': { 'at': Date.today }}
     assert_response :success
     assert_template 'new'
 
-    get :new, 'feeling': { 'at': Date.today }, project_id: 0
+    get :new, params: {'feeling': { 'at': Date.today }, project_id: 0}
     assert_response 404
   end
 
   def test_create
-    post :create, 'feeling': { 'at': Date.today }
+    post :create, params: {'feeling': { 'at': Date.today }}
     assert_response 302
 
     assert_raises ArgumentError do
-      post :create, 'feeling': { 'at': Date.today , 'level': '3', 'description': 'aaa' }
+      post :create, params: {'feeling': { 'at': Date.today , 'level': '3', 'description': 'aaa' }}
     end
 
-    post :create, 'feeling': { 'at': Date.today , 'level': '2', 'description': 'aaa' }
+    post :create, params: {'feeling': { 'at': Date.today , 'level': '2', 'description': 'aaa' }}
     assert_redirected_to controller: :feelings, action: :index, user_id: 1
 
-    post :create, 'feeling': { 'at': Date.today + 1 , 'level': '2', 'description': 'aaa' }, project_id: 1
+    post :create, params: {'feeling': { 'at': Date.today + 1 , 'level': '2', 'description': 'aaa' }, project_id: 1}
     assert_redirected_to controller: :niko_cale, action: :index, project_id: 'ecookbook'
   end
 
@@ -89,7 +89,7 @@ class FeelingsControllerTest < ActionController::TestCase
     f4 = Feeling.good.create(user: user, at: Date.today)
     f5 = Feeling.good.create(user: user, at: Date.today - 1)
 
-    delete :destroy, id: f4.id
+    delete :destroy, params: {id: f4.id}
     assert_redirected_to controller: :feelings, action: :index, user_id: 1
     assert_equal Feeling.find(f1.id), f1
 
@@ -97,70 +97,70 @@ class FeelingsControllerTest < ActionController::TestCase
     assert f1.destroy
     assert f2.destroy
 
-    delete :destroy, id: f5.id, project_id: 1
+    delete :destroy, params: {id: f5.id, project_id: 1}
     assert_redirected_to controller: :niko_cale, action: :index, project_id: 'ecookbook'
   end
 
   def test_preview
-    xhr :put, :update, id: 0
+    put :update, xhr: true, params: {id: 0}
     assert_response 404
 
     assert_raises ArgumentError do
-      xhr :put, :update, id: 1, 'feeling': { 'level': '3', 'description': 'aaa' }
+      put :update, xhr: true, params: {id: 1, 'feeling': { 'level': '3', 'description': 'aaa' }}
     end
 
-    xhr :put, :update, id: 1, 'feeling': { 'level': '2', 'description': 'aaa' }
+    put :update, xhr: true, params: {id: 1, 'feeling': { 'level': '2', 'description': 'aaa' }}
     assert_response :success
   end
 
   def test_index
-    get :index, project_id: 0
+    get :index, params: {project_id: 0}
     assert_response 404
 
-    get :index, user_id: 0
+    get :index, params: {user_id: 0}
     assert_response 404
 
     get :index
     assert_response :success
     assert_template 'index'
 
-    get :index, project_id: 1
+    get :index, params: {project_id: 1}
     assert_response :success
     assert_template 'index'
 
-    get :index, user_id: 1
+    get :index, params: {user_id: 1}
     assert_response(:success)
     assert_template 'index'
 
-    xhr :get, :index
+    get :index, xhr: true
+        assert_response :success
+    assert_template 'index'
+
+    get :index, xhr: true, params: {project_id: 1}
     assert_response :success
     assert_template 'index'
 
-    xhr :get, :index, project_id: 1
-    assert_response :success
-    assert_template 'index'
-
-    xhr :get, :index, user_id: 1
+    get :index, xhr: true, params: {user_id: 1}
     assert_response :success
     assert_template 'index'
   end
 
   def test_post_comment
-    post :edit_comment, id: 0
+    post :edit_comment, params: {id: 0}
     assert_response 404
 
-    post :edit_comment, id: 1
+    post :edit_comment, params: {id: 1}
     assert_response 404
 
-    post :edit_comment, id: 1, 'comment': { 'comments': '' }
+    post :edit_comment, params: {id: 1, 'comment': { 'comments': '' }}
     assert_redirected_to controller: :feelings, action: :show, id: 1
     assert_equal Feeling.find(1).comments.size, 0
 
-    post :edit_comment, id: 1, 'comment': { 'comments': 'aaa' }
+    post :edit_comment, params: {id: 1, 'comment': { 'comments': 'aaa' }}
     assert_redirected_to controller: :feelings, action: :show, id: 1
     assert_equal Feeling.find(1).comments.size, 1
 
-    post :edit_comment, id: 1, 'comment': { 'comments': 'aaa' }, project_id: 1
+    post :edit_comment, params: {id: 1, 'comment': { 'comments': 'aaa' }, project_id: 1}
     assert_redirected_to controller: :feelings, action: :show, project_id: 'ecookbook', id: 1
     assert_equal Feeling.find(1).comments.size, 2
   end
@@ -173,27 +173,27 @@ class FeelingsControllerTest < ActionController::TestCase
     comment = feeling.comments[0]
     comment2 = feeling.comments[1]
 
-    delete :edit_comment, id: 0
+    delete :edit_comment, params: {id: 0}
     assert_response 404
 
-    delete :edit_comment, id: 1, comment_id: 0
+    delete :edit_comment, params: {id: 1, comment_id: 0}
     assert_response 404
 
-    delete :edit_comment, id: 1, comment_id: comment.id
+    delete :edit_comment, params: {id: 1, comment_id: comment.id}
     assert_redirected_to controller: :feelings, action: :show, id: 1
 
-    delete :edit_comment, id: 1, comment_id: comment2.id, project_id: 1
+    delete :edit_comment, params: {id: 1, comment_id: comment2.id, project_id: 1}
     assert_redirected_to controller: :feelings, action: :show, id: 1, project_id: 'ecookbook'
   end
 
   def test_preview_comment
-    xhr :post, :edit_comment, id: 0
+    post :edit_comment, xhr: true, params: {id: 0}
     assert_response 404
 
-    xhr :post, :edit_comment, id: 1
+    post :edit_comment, xhr: true, params: {id: 1}
     assert_response 404
 
-    xhr :post, :edit_comment, id: 1, 'comment': { 'comments': 'aa' }
+    post :edit_comment, xhr: true, params: {id: 1, 'comment': { 'comments': 'aa' }}
     assert_response :success
   end
 end

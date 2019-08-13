@@ -19,7 +19,7 @@ class FeelingsMailer < Mailer
   #
   # Example:
   #   feeling_commented(comment) => Mail::Message object
-  def feeling_commented(comment)
+  def feeling_commented(user, comment)
     @feeling = Feeling.find(comment.commented.id)
     author = comment.author
     owner = @feeling.user
