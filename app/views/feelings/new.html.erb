@@ -40,11 +40,8 @@
      </tr>
   </table>
   <p><%= l(:label_optional_description) %><br>
-  <p><%= f.text_area :description, :cols=>56, :rows=>3 %></p>
-  <%= wikitoolbar_for 'feeling_description' %>
+  <p><%= f.text_area :description, :cols=>56, :rows=>3, :class => 'wiki-edit' %></p>
+  <%= wikitoolbar_for 'feeling_description', preview_text_path(@feeling) %>
   <%= submit_tag l(:button_save), :class => 'button-small', :name => nil %>
-  <% option = @feeling.new_record? ? {:action=>:create}  : feeling_path(@feeling) %>
-  <%= preview_link(option, 'update_feeling' ) %></p>
 <% end %>
 <%= javascript_tag 'document.forms.update_feeling.feeling_description.focus()' %>
-<div id="preview"></div>

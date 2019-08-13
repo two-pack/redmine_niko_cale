@@ -33,9 +33,6 @@
        <%= text_area 'comment', 'comments', :cols => 48, :rows => 3 %>
     </div>
     <p><%= submit_tag l(:button_add) %>
-    <%= preview_link({:action => :edit_comment, :id => @feeling.id,
-                      :project_id=>((@project && @project.identifier) || nil)}, 'add_comment_form' ) %></p>
   <% end %>
-  <div id="preview"></div>
 <% end %>
 </div>
