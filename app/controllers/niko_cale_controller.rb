@@ -15,7 +15,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 class NikoCaleController < ApplicationController
   helper FeelingsHelper
-  before_filter :find_project, :authorize_global
+  before_action :find_project, :authorize_global
 
   def index
     @selected_role_ids = get_selected_role_ids

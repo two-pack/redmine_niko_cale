@@ -15,10 +15,10 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 class FeelingsController < ApplicationController
   helper FeelingsHelper
-  before_filter :find_project, :authorize_global
-  before_filter :find_feeling, :only => [:show, :edit, :update, :destroy, :edit_comment]
-  before_filter :create_feeling, :only => [:new, :create]
-  before_filter :render_feeling, :only => [:new, :show]
+  before_action :find_project, :authorize_global
+  before_action :find_feeling, :only => [:show, :edit, :update, :destroy, :edit_comment]
+  before_action :create_feeling, :only => [:new, :create]
+  before_action :render_feeling, :only => [:new, :show]
 
   def index
     if @project
